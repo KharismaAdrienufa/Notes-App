@@ -1,0 +1,57 @@
+:root {
+    --primary-font: 'Montserrat', serif;
+    --secondary-font: 'Alata', sans-serif;
+    --blue-color: #2E6E83;
+    --purple-color: #451952;
+    --pink-color: #662549;
+    --green-color: #45775F;
+    --yellow-color: #EFBC08;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    background-color: black;
+    color: white;
+}
+
+h1, h3 {
+    font-family: var(--primary-font);
+}
+
+h1 {
+    font-weight: bold;
+    font-size: 75px;
+}
+
+.grid {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr;
+    grid-template-areas:
+    'header .'
+    'main-content side-content'
+    ;
+    padding: 0 30px;
+    margin-bottom: 50px;
+}
+
+header {
+    grid-area: header;
+    /* background-color: blue; */
+}
+
+main {
+    grid-area: main-content;
+    /* background-color: pink; */
+}
+
+aside {
+    grid-area: side-content;
+    /* background-color: green; */
+}
