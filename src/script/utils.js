@@ -12,6 +12,14 @@ class Utils {
         element.style.display = 'none';
         element.hidden = true;
     }
+
+    static generateId() {
+        return `notes-${crypto.randomUUID()}`;
+    }
+
+    static generateDate() {
+        return new Date().toISOString();
+    }
 }
 
 export default Utils;

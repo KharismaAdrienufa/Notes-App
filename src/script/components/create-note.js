@@ -2,13 +2,64 @@ class CreateNote extends HTMLElement {
     _shadowRoot = null;
     _style = null;
 
+    _formSubmitHandler = null;
+
     constructor() {
         super();
 
         this._shadowRoot = this.attachShadow({ mode: 'open' });
         this._style = document.createElement('style');
 
+        this._formSubmitHandler = this._onFormSubmit.bind(this);
+
         this.render();
+    }
+
+    connectedCallback() {
+        const createNoteForm = this._shadowRoot.querySelector('#createNote');
+        createNoteForm.addEventListener('submit', this._formSubmitHandler);
+        this._onInputTitle();
+    }
+
+    disconnectedCallback() {
+        const createNoteForm = this._shadowRoot.querySelector('#createNote');
+        createNoteForm.removeEventListener('submit', this._formSubmitHandler)
+    }
+
+    _onInputTitle(event) {
+        const noteTitle = this._shadowRoot.querySelector('#noteTitle');
+        const validMessage = this._shadowRoot.querySelector('#validMessage');
+
+        const customValidationHandler = (event) => {
+            event.target.setCustomValidity('');
+
+            if (event.target.validity.patternMismatch) {
+                event.target.setCustomValidity('it can\'t start with symbol, contain whitespace or special character');
+                validMessage.textContent = 'it can\'t start with symbol, contain whitespace or special character';
+            } else {
+                validMessage.textContent = '';
+            }
+        }
+
+        noteTitle.addEventListener('input', customValidationHandler);
+        noteTitle.addEventListener('blur', customValidationHandler);
+    }
+
+    _onFormSubmit(event) {
+        event.preventDefault();
+
+        const noteTitle = this._shadowRoot.querySelector('#noteTitle').value;
+        const noteBody = this._shadowRoot.querySelector('#noteBody').value;
+
+        if(!noteTitle || !noteBody) return;
+
+        this.dispatchEvent(
+            new CustomEvent('submit-note', {
+                detail: { noteTitle, noteBody },
+                bubbles: true,
+                composed: true
+            })
+        );
     }
 
     _updateStyle() {
@@ -100,8 +151,8 @@ class CreateNote extends HTMLElement {
                 <form id="createNote" class="create-note">
                     <div class="form-group">
                         <label for="noteTitle" class="semi-hidden">Note Title</label>
-                        <input id="noteTitle" name="noteTitle" placeholder="Title"/>
-                        <p id="validationMessage" class="validation-message">pesan</p>
+                        <input id="noteTitle" name="noteTitle" placeholder="Title" pattern="^(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._]+(?<![_.])$"/>
+                        <p id="validMessage" class="valid-message"></p>
                         
                         <label for="noteBody" class="semi-hidden">Note Body</label>
                         <textarea id="noteBody" name="noteBody" placeholder="Body"></textarea>

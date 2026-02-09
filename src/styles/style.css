@@ -39,19 +39,17 @@ h1 {
     ;
     padding: 0 30px;
     margin-bottom: 50px;
+    gap: 10px;
 }
 
 header {
     grid-area: header;
-    /* background-color: blue; */
 }
 
 main {
     grid-area: main-content;
-    /* background-color: pink; */
 }
 
 aside {
     grid-area: side-content;
-    /* background-color: green; */
 }

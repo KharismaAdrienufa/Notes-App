@@ -4,8 +4,9 @@ import Utils from "../utils.js";
 const home = () => {
     const notesListElement = document.querySelector('notes-list');
     const searchBarElement = document.querySelector('search-bar');
+    const createNoteElement = document.querySelector('create-note');
 
-    const displayNotes = (notes) => {
+    const renderNotes = (notes) => {
         Utils.emptyElement(notesListElement);
 
         const notesItemElements = notes.map((note) => {
@@ -18,9 +19,9 @@ const home = () => {
         notesListElement.append(...notesItemElements);
     };
 
-    const renderNotes = () => {
+    const renderAllNotes = () => {
         const notes = Notes.getAll();
-        displayNotes(notes);
+        renderNotes(notes);
     }
     
     const onSearchHandler = (event) => {
@@ -29,17 +30,36 @@ const home = () => {
         const { query } = event.detail;
         
         if (!query.trim()) {
-            renderNotes();
+            renderAllNotes();
             return;
         }
 
         const result = Notes.searchNotes(query);
-        displayNotes(result);
+        renderNotes(result);
     }
     
     searchBarElement.addEventListener('search', onSearchHandler);
     
-    renderNotes();
+    const createNoteHandler = (event) => {
+        event.preventDefault();
+        
+        const { noteTitle, noteBody } = event.detail;
+        
+        const note = {
+            id: Utils.generateId(),
+            title: noteTitle,
+            body: noteBody,
+            createdAt: Utils.generateDate(),
+            archived: false
+        };
+        
+        Notes.addNotes(note);
+        renderAllNotes();
+    }
+
+    createNoteElement.addEventListener('submit-note', createNoteHandler);
+
+    renderAllNotes();
 }
 
 export default home;

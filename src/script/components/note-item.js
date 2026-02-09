@@ -32,19 +32,29 @@ class NoteItem extends HTMLElement {
             background-color: var(--yellow-color);
             color: black;
             width: 150px;
-            padding: 15px;
+            padding: 20px;
             border-radius: 15px;
             font-size: small;
+            position: relative;
         }
 
         .card-button {
             display: flex;
             flex-direction: row;
-            gap: 5px;
+            position: absolute;
+            right: 5px;
+            bottom: 5px;
+        }
+            
+        button {                
+            background: none;
+            border: none;
         }
 
         .archive-icon, .delete-icon {
             font-family: 'Material Symbols Outlined';
+            font-size: 20px;
+            font-weight: 20px;
         }
         `;
     }
