@@ -1,38 +1,37 @@
 class SearchBar extends HTMLElement {
-    _shadowRoot = null;
-    _style = null;
+  _shadowRoot = null;
+  _style = null;
 
-    constructor() {
-        super();
+  constructor() {
+    super();
 
-        this._shadowRoot = this.attachShadow({ mode: 'open' });
-        this._style = document.createElement('style');
-        
-        this.render();
-    }
-    
-    connectedCallback() {
-        const searchForm = this._shadowRoot.querySelector('#searchForm');
-        searchForm.addEventListener('submit', (event) => {
-            event.preventDefault()
-        });
+    this._shadowRoot = this.attachShadow({ mode: "open" });
+    this._style = document.createElement("style");
 
-        const searchInput = this._shadowRoot.querySelector('input');
-        searchInput.addEventListener('input', (event) => {
-            this.dispatchEvent(
-                new CustomEvent('search', {
-                    detail: {
-                        query: event.target.value,
-                    },
-                    bubbles: true,
-                })
-            );
-        });
+    this.render();
+  }
 
-    }
+  connectedCallback() {
+    const searchForm = this._shadowRoot.querySelector("#searchForm");
+    searchForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+    });
 
-    _updateStyle() {
-        this._style.textContent = `
+    const searchInput = this._shadowRoot.querySelector("input");
+    searchInput.addEventListener("input", (event) => {
+      this.dispatchEvent(
+        new CustomEvent("search", {
+          detail: {
+            query: event.target.value,
+          },
+          bubbles: true,
+        }),
+      );
+    });
+  }
+
+  _updateStyle() {
+    this._style.textContent = `
         .search-form {
             display: flex;
             flex-direction: row;
@@ -75,17 +74,17 @@ class SearchBar extends HTMLElement {
             font-size: 20px;
         }
         `;
-    }
+  }
 
-    _emptyContent() {
-        this._shadowRoot.innerHTML = '';
-    }
+  _emptyContent() {
+    this._shadowRoot.innerHTML = "";
+  }
 
-    render() {
-        this._updateStyle();
+  render() {
+    this._updateStyle();
 
-        this._shadowRoot.appendChild(this._style);
-        this._shadowRoot.innerHTML += `
+    this._shadowRoot.appendChild(this._style);
+    this._shadowRoot.innerHTML += `
             <div class="search-bar">
                 <form id="searchForm" class="search-form">
                     <div class="form-group">
@@ -99,7 +98,7 @@ class SearchBar extends HTMLElement {
                 </form>
             </div>
         `;
-    }
+  }
 }
 
-customElements.define('search-bar', SearchBar);
+customElements.define("search-bar", SearchBar);

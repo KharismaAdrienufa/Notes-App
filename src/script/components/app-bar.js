@@ -1,15 +1,14 @@
-import './search-bar.js';
+import "./search-bar.js";
 
 class AppBar extends HTMLElement {
+  constructor() {
+    super();
 
-    constructor() {
-        super();
+    this._style = document.createElement("style");
+  }
 
-        this._style = document.createElement('style');
-    }
-
-    _updateStyle() {
-        this._style.textContent = `
+  _updateStyle() {
+    this._style.textContent = `
             .app-bar {
                 display: grid;
                 grid-template-columns: repeat(2, 1fr);
@@ -33,29 +32,29 @@ class AppBar extends HTMLElement {
                 grid-area: search-bar;
             }
         `;
-    }
+  }
 
-    _emptyContent() {
-        this.innerHTML = '';
-    }
+  _emptyContent() {
+    this.innerHTML = "";
+  }
 
-    connectedCallback() {
-        this.render();
-    }
+  connectedCallback() {
+    this.render();
+  }
 
-    render() {
-        this._emptyContent();
-        this._updateStyle();
+  render() {
+    this._emptyContent();
+    this._updateStyle();
 
-        this.appendChild(this._style);
-        this.innerHTML += `
+    this.appendChild(this._style);
+    this.innerHTML += `
             <div class="app-bar">
                 <h1 class="app-title">Notes</h1>
                 <h3 class="title-desc">Write down your<br>thought</h3>
                 <search-bar></search-bar> 
             </div>
         `;
-    }
+  }
 }
 
-customElements.define('app-bar', AppBar);
+customElements.define("app-bar", AppBar);

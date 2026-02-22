@@ -1,69 +1,77 @@
 class CreateNote extends HTMLElement {
-    _shadowRoot = null;
-    _style = null;
+  _shadowRoot = null;
+  _style = null;
 
-    _formSubmitHandler = null;
+  _formSubmitHandler = null;
 
-    constructor() {
-        super();
+  constructor() {
+    super();
 
-        this._shadowRoot = this.attachShadow({ mode: 'open' });
-        this._style = document.createElement('style');
+    this._shadowRoot = this.attachShadow({ mode: "open" });
+    this._style = document.createElement("style");
 
-        this._formSubmitHandler = this._onFormSubmit.bind(this);
+    this._formSubmitHandler = this._onFormSubmit.bind(this);
 
-        this.render();
-    }
+    this.render();
+  }
 
-    connectedCallback() {
-        const createNoteForm = this._shadowRoot.querySelector('#createNote');
-        createNoteForm.addEventListener('submit', this._formSubmitHandler);
-        this._onInputTitle();
-    }
+  connectedCallback() {
+    const createNoteForm = this._shadowRoot.querySelector("#createNote");
+    createNoteForm.addEventListener("submit", this._formSubmitHandler);
+    this._onInputTitle();
+  }
 
-    disconnectedCallback() {
-        const createNoteForm = this._shadowRoot.querySelector('#createNote');
-        createNoteForm.removeEventListener('submit', this._formSubmitHandler)
-    }
+  disconnectedCallback() {
+    const createNoteForm = this._shadowRoot.querySelector("#createNote");
+    createNoteForm.removeEventListener("submit", this._formSubmitHandler);
+  }
 
-    _onInputTitle(event) {
-        const noteTitle = this._shadowRoot.querySelector('#noteTitle');
-        const validMessage = this._shadowRoot.querySelector('#validMessage');
+  _onInputTitle(event) {
+    const noteTitle = this._shadowRoot.querySelector("#noteTitle");
+    const validMessage = this._shadowRoot.querySelector("#validMessage");
 
-        const customValidationHandler = (event) => {
-            event.target.setCustomValidity('');
+    const customValidationHandler = (event) => {
+      event.target.setCustomValidity("");
 
-            if (event.target.validity.patternMismatch) {
-                event.target.setCustomValidity('it can\'t start with symbol, contain whitespace or special character');
-                validMessage.textContent = 'it can\'t start with symbol, contain whitespace or special character';
-            } else {
-                validMessage.textContent = '';
-            }
-        }
-
-        noteTitle.addEventListener('input', customValidationHandler);
-        noteTitle.addEventListener('blur', customValidationHandler);
-    }
-
-    _onFormSubmit(event) {
-        event.preventDefault();
-
-        const noteTitle = this._shadowRoot.querySelector('#noteTitle').value;
-        const noteBody = this._shadowRoot.querySelector('#noteBody').value;
-
-        if(!noteTitle || !noteBody) return;
-
-        this.dispatchEvent(
-            new CustomEvent('submit-note', {
-                detail: { noteTitle, noteBody },
-                bubbles: true,
-                composed: true
-            })
+      if (event.target.validity.patternMismatch) {
+        event.target.setCustomValidity(
+          "it can't start with symbol, contain whitespace or special character",
         );
-    }
+        validMessage.textContent =
+          "it can't start with symbol, contain whitespace or special character";
+      } else {
+        validMessage.textContent = "";
+      }
+    };
 
-    _updateStyle() {
-        this._style.textContent = `
+    noteTitle.addEventListener("input", customValidationHandler);
+    noteTitle.addEventListener("blur", customValidationHandler);
+  }
+
+  _onFormSubmit(event) {
+    event.preventDefault();
+
+    const noteTitle = this._shadowRoot.querySelector("#noteTitle").value;
+    const noteBody = this._shadowRoot.querySelector("#noteBody").value;
+
+    if (!noteTitle || !noteBody) return;
+
+    this.dispatchEvent(
+      new CustomEvent("submit-note", {
+        detail: { noteTitle, noteBody },
+        bubbles: true,
+        composed: true,
+      }),
+    );
+  }
+
+  resetForm() {
+    const createNoteForm = this._shadowRoot.querySelector("#createNote");
+    createNoteForm.reset();
+  }
+
+  _updateStyle() {
+    this._style.textContent = `
         :host {
             font-family: var(--primary-font);
             color: white;
@@ -136,17 +144,17 @@ class CreateNote extends HTMLElement {
             justify-self: end;
         }
         `;
-    }
+  }
 
-    _emptyContent() {
-        this._shadowRoot.innerHTML = '';
-    }
+  _emptyContent() {
+    this._shadowRoot.innerHTML = "";
+  }
 
-    render() {
-        this._updateStyle();
+  render() {
+    this._updateStyle();
 
-        this._shadowRoot.appendChild(this._style);
-        this._shadowRoot.innerHTML += `
+    this._shadowRoot.appendChild(this._style);
+    this._shadowRoot.innerHTML += `
             <div class="create-note">
                 <form id="createNote" class="create-note">
                     <div class="form-group">
@@ -162,7 +170,7 @@ class CreateNote extends HTMLElement {
                 </form>
             </div>
         `;
-    }
+  }
 }
 
-customElements.define('create-note', CreateNote);
+customElements.define("create-note", CreateNote);

@@ -1,33 +1,92 @@
 class NoteItem extends HTMLElement {
-    _shadowRoot = null;
-    _style = null;
-    _note = {
-        id: null,
-        title: null,
-        body: null,
-        createdAt: null,
-        archived: null,
-    };
+  _shadowRoot = null;
+  _style = null;
+  _note = {
+    id: null,
+    title: null,
+    body: null,
+    createdAt: null,
+    archived: null,
+  };
 
-    constructor() {
-        super();
+  constructor() {
+    super();
 
-        this._shadowRoot = this.attachShadow({ mode: 'open' });
-        this._style = document.createElement('style');
+    this._shadowRoot = this.attachShadow({ mode: "open" });
+    this._style = document.createElement("style");
+    this._archiveHandler = this._archiveHandler.bind(this);
+    this._unarchiveHandler = this._unarchiveHandler.bind(this);
+    this._deleteHandler = this._deleteHandler.bind(this);
+  }
+
+  connectedCallback() {
+    const archiveButton = this._shadowRoot.querySelector("#archiveButton");
+
+    if (this._note.archived) {
+      archiveButton.addEventListener("click", this._unarchiveHandler);
+    } else {
+      archiveButton.addEventListener("click", this._archiveHandler);
     }
 
-    set note(value) {
-        this._note = value;
+    const deleteButton = this._shadowRoot.querySelector("#deleteButton");
+    deleteButton.addEventListener("click", this._deleteHandler);
+  }
 
-        this.render();
+  disconnectedCallback() {
+    const archiveButton = this._shadowRoot.querySelector("#archiveButton");
+
+    if (this._note.archived) {
+      archiveButton.removeEventListener("click", this._unarchiveHandler);
+    } else {
+      archiveButton.removeEventListener("click", this._archiveHandler);
     }
 
-    get note() {
-        return this._note;
-    }
+    const deleteButton = this._shadowRoot.querySelector("#deleteButton");
+    deleteButton.removeEventListener("click", this._deleteHandler);
+  }
 
-    _updateStyle() {
-        this._style.textContent = `
+  _archiveHandler() {
+    this.dispatchEvent(
+      new CustomEvent("archive-note", {
+        detail: { id: this.note.id },
+        bubbles: true,
+        composed: true,
+      }),
+    );
+  }
+
+  _unarchiveHandler() {
+    this.dispatchEvent(
+      new CustomEvent("unarchive-note", {
+        detail: { id: this.note.id },
+        bubbles: true,
+        composed: true,
+      }),
+    );
+  }
+
+  _deleteHandler() {
+    this.dispatchEvent(
+      new CustomEvent("delete-note", {
+        detail: { id: this.note.id },
+        bubbles: true,
+        composed: true,
+      }),
+    );
+  }
+
+  set note(value) {
+    this._note = value;
+
+    this.render();
+  }
+
+  get note() {
+    return this._note;
+  }
+
+  _updateStyle() {
+    this._style.textContent = `
         .card {
             background-color: var(--yellow-color);
             color: black;
@@ -57,33 +116,33 @@ class NoteItem extends HTMLElement {
             font-weight: 20px;
         }
         `;
-    }
+  }
 
-    _emptyContent() {
-        this._shadowRoot.innerHTML = '';
-    }
+  _emptyContent() {
+    this._shadowRoot.innerHTML = "";
+  }
 
-    render() {
-        this._emptyContent();
-        this._updateStyle();
+  render() {
+    this._emptyContent();
+    this._updateStyle();
 
-        this._shadowRoot.appendChild(this._style);
-        this._shadowRoot.innerHTML += `
+    this._shadowRoot.appendChild(this._style);
+    this._shadowRoot.innerHTML += `
             <div class="card" data-note-id=${this._note.id}>
                 <h4>${this._note.title}</h4>
                 <p>${this._note.createdAt}</p>
                 <p>${this._note.body}</p>
                 <div class="card-button">
-                    <button>
+                    <button id="archiveButton">
                         <span class="archive-icon">archive</span>
                     </button>
-                    <button>
+                    <button id="deleteButton">
                         <span class="delete-icon">delete</span>
                     </button>
-                </div
+                </div>
             </div>
         `;
-    }
+  }
 }
 
-customElements.define('note-item', NoteItem);
+customElements.define("note-item", NoteItem);

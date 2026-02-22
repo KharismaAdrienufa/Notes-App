@@ -1,20 +1,20 @@
 class NotesList extends HTMLElement {
-    _shadowRoot = null;
-    _style = null;
+  _shadowRoot = null;
+  _style = null;
 
-    constructor() {
-        super();
+  constructor() {
+    super();
 
-        this._shadowRoot = this.attachShadow({ mode: 'open' });
-        this._style = document.createElement('style');
+    this._shadowRoot = this.attachShadow({ mode: "open" });
+    this._style = document.createElement("style");
 
-        this.render();
-    }
+    this.render();
+  }
 
-    _updateStyle() {
-        this._style.textContent = `
+  _updateStyle() {
+    this._style.textContent = `
         .notes-list{
-            height: 300px;
+            height: 250px;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             overflow-y: auto;
@@ -25,24 +25,23 @@ class NotesList extends HTMLElement {
             display: none;
         }
         `;
-    }
+  }
 
-    _emptyContent() {
-        this._shadowRoot.innerHTML = '';
-    }
+  _emptyContent() {
+    this._shadowRoot.innerHTML = "";
+  }
 
-    render() {
-        this._emptyContent();
-        this._updateStyle();
+  render() {
+    this._emptyContent();
+    this._updateStyle();
 
-        this._shadowRoot.appendChild(this._style);
-        this._shadowRoot.innerHTML += `
+    this._shadowRoot.appendChild(this._style);
+    this._shadowRoot.innerHTML += `
             <div class="notes-list">
                 <slot></slot>
             </div>
         `;
-    }
-
+  }
 }
 
-customElements.define('notes-list', NotesList);
+customElements.define("notes-list", NotesList);

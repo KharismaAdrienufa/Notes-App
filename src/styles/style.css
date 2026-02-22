@@ -1,55 +1,70 @@
 :root {
-    --primary-font: 'Montserrat', serif;
-    --secondary-font: 'Alata', sans-serif;
-    --blue-color: #2E6E83;
-    --purple-color: #451952;
-    --pink-color: #662549;
-    --green-color: #45775F;
-    --yellow-color: #EFBC08;
+  --primary-font: "Montserrat", serif;
+  --secondary-font: "Alata", sans-serif;
+  --blue-color: #2e6e83;
+  --purple-color: #451952;
+  --pink-color: #662549;
+  --green-color: #45775f;
+  --yellow-color: #efbc08;
 }
 
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 body {
-    padding: 0;
-    margin: 0;
-    background-color: black;
-    color: white;
+  padding: 0;
+  margin: 0;
+  background-color: black;
+  color: white;
 }
 
-h1, h3 {
-    font-family: var(--primary-font);
+h1,
+h3 {
+  font-family: var(--primary-font);
 }
 
 h1 {
-    font-weight: bold;
-    font-size: 75px;
+  font-weight: bold;
+  font-size: 75px;
 }
 
 .grid {
-    min-height: 100vh;
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    grid-template-rows: auto 1fr;
-    grid-template-areas:
-    'header .'
-    'main-content side-content'
-    ;
-    padding: 0 30px;
-    margin-bottom: 50px;
-    gap: 10px;
+  min-height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: auto 1fr;
+  grid-template-areas:
+    "header ."
+    "main-content side-content";
+  padding: 0 30px;
+  margin-bottom: 50px;
+  gap: 10px;
 }
 
 header {
-    grid-area: header;
+  grid-area: header;
 }
 
 main {
-    grid-area: main-content;
+  grid-area: main-content;
 }
 
 aside {
-    grid-area: side-content;
+  grid-area: side-content;
+}
+
+.overlay {
+  display: grid;
+  place-items: center;
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  z-index: 9999;
+}
+
+.overlay[hidden] {
+  display: none;
 }
